@@ -1,23 +1,23 @@
 <?php
 
-include 'html/head.html';
+include '../html/head.html';
 
 // get todays date, this month's nth Monday, next month's nth Monday
 $today = new DateTime(date('Y-m-d'));
-$fmon_thismonth = (new DateTime(date('Y-m-d')))->modify('second monday of this month');
-$fmon_nextmonth = (new DateTime(date('Y-m-d')))->modify('second monday of next month');
+$secmon_thismonth = $today->modify('second monday of this month');
+$secmon_nextmonth = $today->modify('second monday of next month');
 
 // determine which Monday is the right next one (this month's or next month's)
 $event_date = null;
 $is_today = false;
 
-if ($today < $fmon_thismonth) {
-    $event_date = $fmon_thismonth;
-} elseif ($today == $fmon_thismonth) {
+if ($today < $secmon_thismonth) {
+    $event_date = $secmon_thismonth;
+} elseif ($today == $secmon_thismonth) {
     $is_today = true;
-    $event_date = $fmon_thismonth;
+    $event_date = $secmon_thismonth;
 } else {
-    $event_date = $fmon_nextmonth;
+    $event_date = $secmon_nextmonth;
 }
 
 // No event in August
@@ -31,9 +31,9 @@ if ($event_date->format('m') == '08') {
 // M = month name
 // d = day of month number
 // Y = full year
-echo $event_date->format('l M d, Y') . ' - ';
+echo $event_date->format('l, M d, Y') . ' ';
 
-include 'html/foot.html';
+include '../html/foot.html';
 
 ?>
 
