@@ -1,0 +1,57 @@
+/* digilego.css */
+
+/* define colours */
+:root {
+    --col-code-light: #fbe1d0;
+    --col-code-regular: #c55a11;
+
+    --col-bq-light: #e3f0db;
+    --col-bq-regular: #70ad47;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0.4em 0 0.2em 0;
+}
+
+h1 {
+    font-size: 1.9rem
+}
+
+h2 {
+    font-size: 1.6rem
+}
+
+h3 {
+    font-size: 1.3rem
+}
+
+h4 {
+    font-size: 1.2rem
+}
+
+h5 {
+    font-size: 1.1rem
+}
+
+
+/* styling elements */
+blockquote {
+    border-left: 10px solid var(--col-bq-regular);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--col-bq-light);
+}
+blockquote p {
+    margin-bottom: 0;
+}
+
+pre {
+    border-left: 3px solid var(--col-code-regular);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--col-code-light);
+}
+
+pre code {
+    background-color: var(--col-code-light);
+    color: black;
+}
+
