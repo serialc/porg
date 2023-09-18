@@ -33,7 +33,6 @@ h5 {
     font-size: 1.1rem
 }
 
-
 /* styling elements */
 blockquote {
     border-left: 10px solid var(--col-bq-regular);
@@ -55,3 +54,7 @@ pre code {
     color: black;
 }
 
+#hero {
+    background-color: #879c97;
+    color: black;
+}
