@@ -58,3 +58,8 @@ pre code {
     background-color: #879c97;
     color: black;
 }
+
+.splash_links {
+    font-size: 1.4rem;
+    font-weight: 300;
+}

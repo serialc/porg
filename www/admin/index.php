@@ -4,6 +4,15 @@ require_once "../../vendor/autoload.php";
 
 include '../../html/head.html';
 
+echo <<< END
+<h2>To add</h2>
+<ul>
+<li>Email textarea to mailing list</li>
+<li>Add mailing list registration</li>
+</ul>
+
+END;
+
 include '../../php/admin.php';
 
 include '../../html/foot.html';

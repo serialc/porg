@@ -33,14 +33,14 @@ if (count($req) > 1 ) {
     // sort so the newest date is at the top
     arsort($sess);
 
-    echo '<h1>Past PORG sessions</h1>';
-    echo '<div class="row">';
+    echo '<h1 class="mt-5">Past PORG sessions</h1>';
+    echo '<div class="row mt-3">';
 
     foreach($sess as $s) {
         $strdate = pathinfo($s, PATHINFO_FILENAME);
         $sdate = new DateTime($strdate);
-        echo '<div class="col-md-3 col-sm-4">';
-        echo '<a href="/sessions/' . $strdate . '">';
+        echo '<div class="col-md-3 col-sm-4 mb-3">';
+        echo '<a href="/sessions/' . $strdate . '" class="text-decoration-none">';
         echo '<div class="h-100 py-3 px-2 bg-body-tertiary border rounded-3 text-center">';
         echo $sdate->format('l, M d, Y');
         echo '</div>';
