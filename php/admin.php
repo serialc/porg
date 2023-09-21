@@ -30,11 +30,11 @@ if (isset($_POST['porg_date']) or isset($_POST['porg_location'])) {
 echo '<form action="." method="post">';
 echo '<div class="row">';
 echo '<div class="col"><h2>Next meeting</h2>';
-echo '<div class="mb-3">
-     <label for="porg_date" class="form-label">Select date</label>
+echo '<div class="input-group">
+     <label for="porg_date" class="input-group-text">Select date</label>
      <input type="date" class="form-control" autofocus="autofocus" id="porg_date" name="porg_date" maxlength="64" aria-describedby="porg_date" value="' . $conf['porg_date'] . '">
-     <div class="form-text">If blank, next second Monday of month is used</div>
      </div>';
+     echo '<div class="form-text">If blank, next second Monday of month is used</div>';
 echo '</div>';
 
 // show the location form
@@ -56,7 +56,7 @@ echo '</div>';
 
 
 echo '<div class="col-12">';
-echo '<button type="submit" class="btn btn-primary w-100">Update</button>';
+echo '<button type="submit" class="btn btn-primary w-100 mt-3">Update</button>';
 echo '</div>';
 
 echo '</div>';
