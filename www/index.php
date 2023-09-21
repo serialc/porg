@@ -20,5 +20,5 @@ default:
 
 include '../html/foot.html';
 
-?>
+// EOF
 
