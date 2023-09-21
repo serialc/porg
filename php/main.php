@@ -68,7 +68,11 @@ if (strcmp($conf['porg_time'], '') !== 0) {
 
 echo "<h3>Location</h3>";
 // show the location based on $conf
-include('../html/locations/' . $conf['porg_location'] . '.html');
+if ( isset($conf['porg_location']) ) {
+    include('../html/locations/' . $conf['porg_location'] . '.html');
+} else {
+    echo 'No location set yet';
+}
 
 // show the suggested next meeting topics
 echo '<h3 class="mt-5">Suggested topic for next meeting</h3>';
@@ -77,7 +81,7 @@ if ( $conf['porg_meeting_topic'] ) {
     $Parsedown = new Parsedown();
     echo $Parsedown->text($conf['porg_meeting_topic']);
 } else {
-    echo 'Free form';
+    echo 'Free form discussion';
 }
 echo '</div>';
 
