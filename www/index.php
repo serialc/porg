@@ -1,4 +1,8 @@
 <?php
+// Filename: index.php
+// Purpose: Main landing file of PORG
+
+namespace frakturmedia\porg;
 
 // Composer autoloader for components
 require_once "../vendor/autoload.php";
@@ -9,6 +13,10 @@ $page = $req[0];
 include '../html/head.html';
 
 switch ($page) {
+
+case 'register':
+    include '../php/register.php';
+    break;
 
 case 'sessions':
     include '../php/sessions.php';

@@ -9,6 +9,10 @@
     --col-bq-regular: #70ad47;
 }
 
+#main {
+    min-height: 50vh;
+}
+
 h1, h2, h3, h4, h5 {
   margin: 0.4em 0 0.2em 0;
 }
@@ -54,8 +58,14 @@ pre code {
     color: black;
 }
 
-#hero {
+.hero {
     background-color: #879c97;
+    color: black;
+}
+.hero a {
+    color: #333;
+}
+.hero a:hover {
     color: black;
 }
 

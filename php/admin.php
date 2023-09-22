@@ -39,6 +39,7 @@ if (isset($_POST['porg_date']) or isset($_POST['porg_location']) or isset($_POST
 }
 
 // show the date form
+echo '<div class="container">';
 echo '<form action="." method="post">';
 echo '<div class="row">';
 echo '<div class="col-lg-4 col-md-6"><h2>Next meeting date-time</h2>';
@@ -85,5 +86,6 @@ echo '</div>';
 
 echo '</div>';
 echo '</form>';
+echo '</div>';
 
 // EOF

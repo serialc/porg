@@ -2,3 +2,6 @@ vendor
 composer.lock
 .htaccess
 .htpasswd
+salt_file.txt
+config.php
+mailing_list.csv
