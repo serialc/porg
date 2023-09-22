@@ -5,6 +5,8 @@
 
 define ("SESSIONS_DIR", '../sessions');
 
+echo '<div class="container">';
+
 // If a date is provided show the session
 if (count($req) > 1 ) {
     // clean date or throw error
@@ -47,6 +49,9 @@ if (count($req) > 1 ) {
         echo '</a>';
         echo '</div>';
     }
-
     echo '</div>';
+
 }
+
+// Close container
+echo '</div>';
