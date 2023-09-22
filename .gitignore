@@ -5,3 +5,4 @@ composer.lock
 salt_file.txt
 config.php
 mailing_list.csv
+composer.phar
