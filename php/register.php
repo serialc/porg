@@ -21,8 +21,8 @@ if (!$sfc) {
 }
 
 // is an email address sent and valid
-$newmailaddress = $_POST['reg_email'];
-if (isset($newmailaddress) and filter_var($newmailaddress, FILTER_VALIDATE_EMAIL)) {
+if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDATE_EMAIL)) {
+    $newmailaddress = $_POST['reg_email'];
 
     # check if email is already in mailing list
     # - if so and verified, just say 'added'
