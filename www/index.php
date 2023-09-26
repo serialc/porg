@@ -5,7 +5,7 @@
 namespace frakturmedia\porg;
 
 // Composer autoloader for components
-require_once "../vendor/autoload.php";
+require_once("../vendor/autoload.php");
 
 $req = explode("/", ltrim($_SERVER['REQUEST_URI'], "/"));
 $page = $req[0];

@@ -6,7 +6,7 @@ namespace frakturmedia\porg;
 
 require_once('../php/config.php');
 require_once('../php/functions.php');
-require_once '../php/classes/mailer.php';
+require_once('../php/classes/mailer.php');
 
 echo '<div class="container">';
 
@@ -29,17 +29,18 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
     # - if in but not verified, send 'regular' message regarding email confirmation
     # - if not in mailing list, add to mailing list but unverified, and send message regarding email verification
 
-    // the mailing list file
-    $mlfn = 'admin/mailing_list.csv';
-
     // check it exists, create it if not
-    if (!file_exists($mlfn)) {
-        touch($mlfn);
+    if (!file_exists(MAILING_LIST_MEMBERS_FILENAME)) {
+        touch(MAILING_LIST_MEMBERS_FILENAME);
     }
 
     // read registered emails
-    $fh = fopen('admin/mailing_list.csv','r');
-    $maillist = fgetcsv($fh);
+    // get the list of emailing list
+    $maillist = getMailingList();
+    if ($ml === false) {
+        // message already sent by function
+        return;
+    }
 
     // start building the email content
     $html = '<h1>PORG mailing list registration request</h1>';
@@ -92,12 +93,25 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
         // check that password is passed in req[1] and that the salted email is valid in password_verify
         if ( filter_var($req[1], FILTER_VALIDATE_EMAIL) and password_verify($salted_email, $req[2]) ) {
             // this is a successful validation
-            // add email address to mailing list
-            $fh = fopen('admin/mailing_list.csv','a');
-            fwrite($fh, $req[1] . ',');
+            // Check that the email address is not already in the list
+            $maillist = getMailingList();
+            if ($ml === false) {
+                // message already sent by function
+                return;
+            }
 
-            echo '<h1>Success</h1>';
-            echo '<p>You are now registered to the PORG mailing list!</p>';
+            // if already in list
+            if (in_array($newmailaddress, $maillist)) {
+                echo '<h1>You are already registered</h1>';
+            } else {
+                // add email address to mailing list
+                $fh = fopen(MAILING_LIST_MEMBERS_FILENAME,'a');
+                fwrite($fh, $req[1] . ',');
+
+                echo '<h1>Success</h1>';
+                echo '<p>You are now registered to the PORG mailing list!</p>';
+            }
+
         } else {
             echo 'Something went wrong trying to verify your email. Let us know.';
         }

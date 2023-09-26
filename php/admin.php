@@ -1,4 +1,6 @@
 <?php
+// Filename: php/admin.php
+// Purpose: show controls next porg meet, location, and topic
 
 // read the existing configuration - if it doesn't exist, it's fine
 $conf = json_decode(file_get_contents('../config.json'), true);
@@ -42,6 +44,8 @@ if (isset($_POST['porg_date']) or isset($_POST['porg_location']) or isset($_POST
 echo '<div class="container">';
 echo '<form action="." method="post">';
 echo '<div class="row">';
+echo '<div class="col-12"><h1>Next event details</h1></div>';
+
 echo '<div class="col-lg-4 col-md-6"><h2>Next meeting date-time</h2>';
 echo '<div class="input-group">
      <label for="porg_date" class="input-group-text">Select date</label>
