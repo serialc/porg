@@ -14,6 +14,10 @@ include '../html/head.html';
 
 switch ($page) {
 
+case 'deregister':
+    include '../php/unsubscribe.php';
+    break;
+
 case 'register':
     include '../php/register.php';
     break;

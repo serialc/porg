@@ -29,11 +29,6 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
     # - if in but not verified, send 'regular' message regarding email confirmation
     # - if not in mailing list, add to mailing list but unverified, and send message regarding email verification
 
-    // check it exists, create it if not
-    if (!file_exists(MAILING_LIST_MEMBERS_FILENAME)) {
-        touch(MAILING_LIST_MEMBERS_FILENAME);
-    }
-
     // read registered emails
     // get the list of emailing list
     $maillist = getMailingList();
@@ -68,10 +63,8 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
     }
 
     $html .= '<p>If you did not make this request, ignore it or let us know.</p>';
-    $html .= '<p>Ability to deregister will be added soon.</p>';
 
     $text .= "If you did not make this request, ignore it or let us know.\n";
-    $text .= "Ability to deregister will be added soon.\n";
 
     $email = new Mail();
     if( $email->send($newmailaddress, '', 'PORG mainling list registration request', $html, $text) ) {
@@ -87,13 +80,25 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
 
     // Is there an email and a hashed salted email in the url - a response from the confirmation email?
     // something like: http://porg.digitaltwin.lu/register/cyrille@digitaltwin.lu/$2y$15......rf9uTX6
-    if ( count($req) === 3 ) {
-        $salted_email = $sfc . $req[1];
+    if ( count($req) >= 3 ) {
+        $this_email = $req[1];
+        $salted_email = $sfc . $this_email;
 
-        // check that password is passed in req[1] and that the salted email is valid in password_verify
-        if ( filter_var($req[1], FILTER_VALIDATE_EMAIL) and password_verify($salted_email, $req[2]) ) {
+        $hashed_email = $req[2];
+
+        // there may be a slash in the hashed email
+        // need to select $req[2+]
+        if ( count($req) > 3 ) {
+            $hashed_email = implode('/', array_splice($req, 2));
+        }
+
+        // check that passed password is valid and that the salted email is correct
+        if ( strcmp(filter_var($this_email, FILTER_VALIDATE_EMAIL), $this_email) === 0
+            and password_verify($salted_email, $hashed_email) ) {
             // this is a successful validation
+
             // Check that the email address is not already in the list
+            // Get the mailing list
             $maillist = getMailingList();
             if ($ml === false) {
                 // message already sent by function
@@ -101,18 +106,19 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
             }
 
             // if already in list
-            if (in_array($newmailaddress, $maillist)) {
+            if (in_array($this_email, $maillist)) {
                 echo '<h1>You are already registered</h1>';
             } else {
                 // add email address to mailing list
                 $fh = fopen(MAILING_LIST_MEMBERS_FILENAME,'a');
-                fwrite($fh, $req[1] . ',');
+                fwrite($fh, $this_email . ',');
 
                 echo '<h1>Success</h1>';
                 echo '<p>You are now registered to the PORG mailing list!</p>';
             }
 
         } else {
+            echo '<h1>Error</h1>';
             echo 'Something went wrong trying to verify your email. Let us know.';
         }
     } else {

@@ -60,7 +60,7 @@ echo '<div class="input-group">
 echo '</div>';
 
 // show the location form
-echo '<div class="col-lg-4 col-md-6"><h2>Meeting location</h2>';
+echo '<div class="col-lg-3 col-md-6"><h2>Meeting location</h2>';
 
 foreach($porg_locs as $loc) {
     $ploc = pathinfo($loc)['filename'];
@@ -77,7 +77,7 @@ foreach($porg_locs as $loc) {
 echo '</div>';
 
 // Next topic
-echo '<div class="col-lg-4 col-md-6"><h2>Next meeting topic</h2>';
+echo '<div class="col-lg-5 col-md-12"><h2>Next meeting topic</h2>';
 echo '<textarea id="porg_meeting_topic" name="porg_meeting_topic" rows="5" class="w-100">' .
     $conf['porg_meeting_topic'] .
     '</textarea>';

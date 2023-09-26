@@ -3,9 +3,19 @@
 // Purpose: Some miscellaneous functions
 
 function getMailingList() {
+    // check it exists, create it if not
+    if (!file_exists(MAILING_LIST_MEMBERS_FILENAME)) {
+        touch(MAILING_LIST_MEMBERS_FILENAME);
+    }
+
     $fh = fopen(MAILING_LIST_MEMBERS_FILENAME, 'r');
     if ($fh) {
         $maillist = fgetcsv($fh);
+
+        // check it's not empty
+        if (!$maillist) {
+            $maillist = [];
+        }
         return $maillist;
     }
 

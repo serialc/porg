@@ -16,6 +16,9 @@ if (isset($_POST['porg_email_text'])) {
         echo "Failed to open the mailing list file.";
     }
 
+    // get the salf file for deregistration/unsubscription
+    $sfc = file_get_contents('../' . ADMIN_SALT_FILE);
+
     $sent_count = 0;
 
     // send the emails
@@ -25,13 +28,17 @@ if (isset($_POST['porg_email_text'])) {
             continue;
         }
 
+        // create hashed email
+        $hashedemail = hashPassword($sfc . $email_address);
+        $unsuburl = 'http://' . $_SERVER['SERVER_NAME'] . '/deregister/' . $email_address. '/' . $hashedemail;
+
         $email = new Mail();
         $etxt = $_POST['porg_email_text'];
         $ehtml = '<html><body>' . $_POST['porg_email_text'];
 
         // add deregister text at footer
         $ehtml .= '<p><a href="https://porg.digitaltwin.lu">Visit the website</a> for more information.</p>';
-        $ehtml .= '<p>To unsubscribe ... coming soon</p></body></html>';
+        $ehtml .= '<p>To unsubscribe <a href="' . $unsuburl . '">click here</a></p></body></html>';
 
         if( $email->send($email_address, '', 'PORG news', $ehtml, $etxt) ) {
             $sent_count += 1;

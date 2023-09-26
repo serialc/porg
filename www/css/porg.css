@@ -58,15 +58,19 @@ pre code {
     color: black;
 }
 
-.hero {
+.hero, .mini-hero {
     background-color: #879c97;
     color: black;
 }
-.hero a {
+.hero a, .mini-hero a {
     color: #333;
 }
-.hero a:hover {
+.hero a:hover, .mini-hero a:hover {
     color: black;
+}
+
+.mini-hero {
+    height: 85px;
 }
 
 .splash_links {
