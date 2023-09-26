@@ -6,6 +6,9 @@ namespace frakturmedia\porg;
 
 use phpmailer\phpmailer;
 
+ini_set("log_errors", 1);
+ini_set("error_log", "php-error.log");
+
 // move to same directory as main page
 // to use same constants
 chdir('..');

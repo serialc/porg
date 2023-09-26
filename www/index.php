@@ -4,6 +4,9 @@
 
 namespace frakturmedia\porg;
 
+ini_set("log_errors", 1);
+ini_set("error_log", "../php-error.log");
+
 // Composer autoloader for components
 require_once("../vendor/autoload.php");
 
