@@ -8,7 +8,7 @@ require_once('../php/config.php');
 require_once('../php/functions.php');
 
 // read the existing configuration
-$conf = json_decode(EVENT_DETAILS_FILE, true);
+$conf = json_decode(file_get_contents(EVENT_DETAILS_FILE), true);
 
 include '../html/splash_menu.html';
 include '../html/welcome.html';

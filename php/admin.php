@@ -44,9 +44,9 @@ if (isset($_POST['porg_date']) or isset($_POST['porg_location']) or
     echo '<div class="col-12">';
     echo getcwd();
     if (file_put_contents(EVENT_DETAILS_FILE, json_encode($conf))) {
-        echo '<div class="alert alert-success mt-3" role="alert"><p>Update successful</p></div>';
+        echo '<div class="alert alert-success mt-3" role="alert">Update successful</div>';
     } else {
-        echo '<div class="alert alert-danger mt-3" role="alert"><p>Failed to update</p></div>';
+        echo '<div class="alert alert-danger mt-3" role="alert">Failed to update</div>';
     }
     echo '</div>';
 }
