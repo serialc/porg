@@ -41,10 +41,8 @@ class Mail
 
     public function send($email, $to_name, $subject, $html, $text)
     {
-        global $log;
-
         try {
-            // Recipients
+            // Recipient
             $this->mail->addAddress($email, $to_name);
 
             // Content

@@ -4,12 +4,14 @@
 
 namespace frakturmedia\porg;
 
+require_once('../php/classes/icsgenerator.php');
+
 echo '<div class="container mt-5"><div class="row"><div class="col-12">';
 // process the email text, send it to the mailing list
 if (isset($_POST['porg_email_text'])) {
 
     // get the list of emailing list
-    $fh = fopen('../' . MAILING_LIST_MEMBERS_FILENAME, 'r');
+    $fh = fopen(MAILING_LIST_MEMBERS_FILENAME, 'r');
     if ($fh) {
         $maillist = fgetcsv($fh);
     } else {
@@ -17,7 +19,7 @@ if (isset($_POST['porg_email_text'])) {
     }
 
     // get the salf file for deregistration/unsubscription
-    $sfc = file_get_contents('../' . ADMIN_SALT_FILE);
+    $sfc = file_get_contents(ADMIN_SALT_FILE);
 
     $sent_count = 0;
 
@@ -33,14 +35,13 @@ if (isset($_POST['porg_email_text'])) {
         $unsuburl = 'http://' . $_SERVER['SERVER_NAME'] . '/deregister/' . $email_address. '/' . $hashedemail;
 
         $email = new Mail();
-        $etxt = $_POST['porg_email_text'];
         $ehtml = '<html><body>' . $_POST['porg_email_text'];
 
         // add deregister text at footer
         $ehtml .= '<p><a href="https://porg.digitaltwin.lu">Visit the website</a> for more information.</p>';
-        $ehtml .= '<p>To unsubscribe <a href="' . $unsuburl . '">click here</a></p></body></html>';
+        $ehtml .= '<p>To unsubscribe <a href="' . $unsuburl . '">click here</a> or visit the link ' . $unsuburl . '</p></body></html>';
 
-        if( $email->send($email_address, '', 'PORG news', $ehtml, $etxt) ) {
+        if( $email->send($email_address, 'Honorable PORG', 'PORG news', $ehtml, strip_tags($ehtml)) ) {
             $sent_count += 1;
         } else {
             echo '<div class="alert alert-danger" role="alert">Failed to send message to ' . $email_address . '</div>';
@@ -58,6 +59,8 @@ echo '</div></div></div>';
 // repackage and determine the event based on $conf and today's date
 $next_event = determineNextPorgEvent($conf);
 
+// Generate calendar invite/ICS
+
 echo <<< END
 <div class="container">
     <form action="." method="post">
@@ -71,11 +74,8 @@ echo <<< END
 
 END;
 
-// Need to add calendar invite/ ICS
-// See:
-// https://blog.trixpark.com/how-to-create-ics-icalendar-file/
 
-echo '<p>The next PORG meet-up is on <strong>' . $next_event['pretty_date'] . ' at ' . $next_event['time'] . '</strong>.<br>' . "\n";
+echo '<p>The next PORG meet-up is on <strong>' . $next_event['pretty_date'] . ' at ' . $next_event['stime'] . ' - ' . $next_event['etime'] . '</strong>.<br>' . "\n";
 
 echo '<p>The topic(s) for discussion are:<br>' . "\n";
 
@@ -85,7 +85,7 @@ echo $Parsedown->text($conf['porg_meeting_topic']);
 
 echo "\n" . '<p>The meeting will take place here:</p>' . "\n";
 if ( isset($conf['porg_location']) ) {
-    include('../../html/locations/' . $conf['porg_location'] . '.html');
+    include('../html/locations/' . $conf['porg_location'] . '.html');
 } else {
     echo 'No location set yet' . "\n";
 }

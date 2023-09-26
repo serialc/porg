@@ -6,3 +6,4 @@ salt_file.txt
 config.php
 mailing_list.csv
 composer.phar
+event_details.json

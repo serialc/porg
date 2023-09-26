@@ -87,9 +87,15 @@ function determineNextPorgEvent($conf)
     print('<br>');
      */
 
-    $event_time = '12h00 - 13h00';
-    if (strcmp($conf['porg_time'], '') !== 0) {
-        echo $conf['porg_time'] . "</p>";
+    // Get the time, or use the default if not set
+    $stime = '12:00';
+    $etime = '13:00';
+
+    if (strcmp($conf['porg_stime'], '') !== 0) {
+        $stime = $conf['porg_stime'];
+    }
+    if (strcmp($conf['porg_etime'], '') !== 0) {
+        $etime = $conf['porg_etime'];
     }
 
     // format event date for humans
@@ -101,11 +107,13 @@ function determineNextPorgEvent($conf)
     return array(
         "date" => $event_date,
         "pretty_date" => $event_date->format('l, M j, Y'),
-        "time" => $event_time,
-        "place" => $conf['porg_location']
+        "stime" => $stime,
+        "etime" => $etime,
+        "place" => $conf['porg_location'],
+        "start_dt" => $event_date->format('Y-m-d') . ' ' . $stime,
+        "end_dt" => $event_date->format('Y-m-d') . ' ' . $etime,
     );
 }
-
 
 
 // EOF
