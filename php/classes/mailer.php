@@ -39,6 +39,11 @@ class Mail
         $this->mail->setFrom(EMAIL_REPLYTO, EMAIL_REPLYTONAME);
     }
 
+    public function addStringAttachment ( $content )
+    {
+        $this->mail->addStringAttachment($content, 'calendar.ics', 'base64', 'text/calendar');
+    }
+
     public function send($email, $to_name, $subject, $html, $text)
     {
         try {

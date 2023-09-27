@@ -2,25 +2,26 @@
 // Filename: php/functions.php
 // Purpose: Some miscellaneous functions
 
-function getMailingList() {
-    // check it exists, create it if not
-    if (!file_exists(MAILING_LIST_MEMBERS_FILENAME)) {
-        touch(MAILING_LIST_MEMBERS_FILENAME);
-    }
-
-    $fh = fopen(MAILING_LIST_MEMBERS_FILENAME, 'r');
-    if ($fh) {
-        $maillist = fgetcsv($fh);
-
-        // check it's not empty
-        if (!$maillist) {
-            $maillist = [];
-        }
-        return $maillist;
-    }
-
-    echo "Failed to open the mailing list file.";
-    return false;
+function createIcalContent ($start, $end, $name, $description, $location ) {
+    $ical_content = 'BEGIN:VCALENDAR
+PRODID:-//Mailer//NONSGML v1.0//EN
+VERSION:2.0
+CALCSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VEVENT
+DTSTART:' . date("Ymd\THis\Z", strtotime($start . 'CET')) . '
+DTEND:' . date("Ymd\THis\Z", strtotime($end . 'CET')) . '
+ORGANIZER;CN=PORG:mailto:' . EMAIL_REPLYTO . '
+UID:' . md5(uniqid(mt_rand(), true)) . '@digitaltwin.lu
+CREATED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
+DESCRIPTION:Productivity Open Research Group monthly meeting
+LAST-MODIFIED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
+SUMMARY:
+LOCATION:Belval, Luxembourg
+END:VEVENT
+END:VCALENDAR
+';
+    return $ical_content;
 }
 
 // https://stackoverflow.com/questions/4356289/php-random-string-generator

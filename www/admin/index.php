@@ -25,12 +25,16 @@ require_once('../php/classes/mailer.php');
 include '../html/head.html';
 
 echo <<< END
+<div class="container">
+<div class="row">
 <div class="col-12">
 <h2>To add</h2>
 <ul>
-<li>Restructure code, use a mailing-list class</li>
-<li>Add calendar invite with mailing events</li>
+<li>Add checkbox to enable calendar invites with next event</li>
+<li>Attach calendar invite with mailing events. Didn't manage to get it recognized as anything but an attachment.</li>
 </ul>
+</div>
+</div>
 </div>
 END;
 

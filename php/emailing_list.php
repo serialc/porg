@@ -4,14 +4,20 @@
 
 namespace frakturmedia\porg;
 
-require_once('../php/classes/icsgenerator.php');
+require_once('../php/classes/maillist.php');
 
-echo '<div class="container mt-5"><div class="row"><div class="col-12">';
+// repackage and determine the event based on $conf and today's date
+$next_event = determineNextPorgEvent($conf);
+
+echo '<div class="container mt-2"><div class="row"><div class="col-12">';
 // process the email text, send it to the mailing list
 if (isset($_POST['porg_email_text'])) {
 
     // get the list of emailing list
     $maillist = new MailingList();
+
+    // Create calendar invite/ICS
+    $ical_content = createIcalContent($next_event['start_dt'], $next_event['end_dt'], 'PORG meeting', $conf['porg_meeting_topic'], $next_event['place']);
 
     // get the salf file for deregistration/unsubscription
     $sfc = file_get_contents(ADMIN_SALT_FILE);
@@ -19,12 +25,17 @@ if (isset($_POST['porg_email_text'])) {
     $sent_count = 0;
 
     // send the emails
-    foreach( $maillist->getList() as $email_address ) {
+    foreach( $maillist->get() as $email_address ) {
         // create hashed email
         $hashedemail = hashPassword($sfc . $email_address);
         $unsuburl = 'http://' . $_SERVER['SERVER_NAME'] . '/deregister/' . $email_address. '/' . $hashedemail;
 
         $email = new Mail();
+        // attach ical event if requested
+        // DISABLED, doesn't work as desired
+        //$email->addStringAttachment($ical_content);
+
+        // Build up the email content
         $ehtml = '<html><body>' . $_POST['porg_email_text'];
 
         // add deregister text at footer
@@ -40,22 +51,17 @@ if (isset($_POST['porg_email_text'])) {
 
     // show count of emails successfully sent
     echo '<div class="alert alert-success" role="alert">' . $sent_count . ' emails sent</div>';
-
 }
 echo '</div></div></div>';
 
 // SHOW THE FORM
 
-// repackage and determine the event based on $conf and today's date
-$next_event = determineNextPorgEvent($conf);
-
-// Generate calendar invite/ICS
 
 echo <<< END
 <div class="container">
     <form action="." method="post">
         <div class="row">
-            <div class="col-12 mt-4"><h1>Message mailing list</h1></div>
+            <div class="col-12 mt-2"><h1>Contact mailing list</h1></div>
 
             <div class="col-12">
                 <textarea id="porg_email_text" name="porg_email_text" rows="10" class="w-100">
@@ -84,8 +90,8 @@ echo <<< END
                 </textarea>
             </div>
 
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary w-100 mt-3">Send emails</button>
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary mt-3">Send emails</button>
             </div>
         </div>
     </form>

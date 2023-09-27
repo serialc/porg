@@ -7,6 +7,7 @@ namespace frakturmedia\porg;
 require_once('../php/config.php');
 require_once('../php/functions.php');
 require_once('../php/classes/mailer.php');
+require_once('../php/classes/maillist.php');
 
 echo '<div class="container">';
 
@@ -31,11 +32,7 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
 
     // read registered emails
     // get the list of emailing list
-    $maillist = getMailingList();
-    if ($ml === false) {
-        // message already sent by function
-        return;
-    }
+    $maillist = new MailingList();
 
     // start building the email content
     $html = '<h1>PORG mailing list registration request</h1>';
@@ -43,7 +40,7 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
     $text .= "======================================\n";
 
     // check if new email is already in mailing list 
-    if ($maillist and in_array($newmailaddress, $maillist)) {
+    if ($maillist->exists($newmailaddress)) {
         // Don't want to give away that it is to prevent people trying to fish out emails
         // We'll send them an email with different content but
         // we do not want to indicate anything differently on the webpage
@@ -99,20 +96,13 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
 
             // Check that the email address is not already in the list
             // Get the mailing list
-            $maillist = getMailingList();
-            if ($ml === false) {
-                // message already sent by function
-                return;
-            }
+            $maillist = new MailingList();
 
             // if already in list
-            if (in_array($this_email, $maillist)) {
+            if ($maillist->exists($this_email)) {
                 echo '<h1>You are already registered</h1>';
             } else {
-                // add email address to mailing list
-                $fh = fopen(MAILING_LIST_MEMBERS_FILENAME,'a');
-                fwrite($fh, $this_email . ',');
-
+                $maillist->add($this_email);
                 echo '<h1>Success</h1>';
                 echo '<p>You are now registered to the PORG mailing list!</p>';
             }

@@ -9,8 +9,6 @@ echo '<div class="row">';
 // read the existing configuration - if it doesn't exist, it's fine
 $conf = json_decode(file_get_contents(EVENT_DETAILS_FILE), true);
 
-//var_dump($_POST);
-
 // the possible locations
 $porg_locs = array_diff(scandir('../html/locations'), array('.', '..'));
 
@@ -42,7 +40,6 @@ if (isset($_POST['porg_date']) or isset($_POST['porg_location']) or
     isset($_POST['porg_stime']) or isset($_POST['porg_etime']) ) {
 
     echo '<div class="col-12">';
-    echo getcwd();
     if (file_put_contents(EVENT_DETAILS_FILE, json_encode($conf))) {
         echo '<div class="alert alert-success mt-3" role="alert">Update successful</div>';
     } else {
@@ -98,8 +95,8 @@ echo '<textarea id="porg_meeting_topic" name="porg_meeting_topic" rows="5" class
 echo '<div class="form-text mb-2">The above is markdown that will be parsed to HTML</div>';
 echo '</div>';
 
-echo '<div class="col-12">';
-echo '<button type="submit" class="btn btn-primary w-100 mt-3">Update</button>';
+echo '<div class="col-12 text-end">';
+echo '<button type="submit" class="btn btn-primary mt-3">Update event</button>';
 echo '</div>';
 
 echo '</div></div>';

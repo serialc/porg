@@ -7,6 +7,7 @@ namespace frakturmedia\porg;
 require_once('../php/config.php');
 require_once('../php/functions.php');
 require_once('../php/classes/mailer.php');
+require_once('../php/classes/maillist.php');
 
 echo '<div class="container"><div class="row"><div class="col">';
 
@@ -16,10 +17,9 @@ $sfc = file_get_contents(ADMIN_SALT_FILE);
 $this_email = $req[1];
 $salted_email = $sfc . $this_email;
 
-$hashed_email = $req[2];
-
 // there may be a slash in the hashed email
 // need to select $req[2+]
+$hashed_email = $req[2];
 if ( count($req) > 3 ) {
     $hashed_email = implode('/', array_splice($req, 2));
 }
@@ -31,22 +31,13 @@ if ( strcmp(filter_var($this_email, FILTER_VALIDATE_EMAIL), $this_email) === 0
     // (this person has permission)
     
     // get the emailing list
-    $maillist = getMailingList();
-    if ($ml === false) {
-        // message already sent by function
-        return;
-    }
+    $maillist = new MailingList();
 
     // if already in list
-    if (in_array($this_email, $maillist)) {
-        // remove them
-        $email_index = array_search($this_email, $maillist);
-        unset($maillist[$email_index]);
+    if ($maillist->exists($this_email)) {
+        $maillist->remove($this_email);
 
-        // save updated email list
-        file_put_contents(MAILING_LIST_MEMBERS_FILENAME, implode(',', $maillist) . ',');
-
-        echo '<h1>Unsubscribe successful</h1>';
+        echo '<h1>You have been unsubscribed</h1>';
         echo '<p>So long, and thanks for all the fish!</p>';
         echo '<p><img src="/imgs/porg.svg"></p>';
     } else {
