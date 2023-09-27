@@ -3,14 +3,16 @@
 // Purpose: Some miscellaneous functions
 
 function createIcalContent ($start, $end, $name, $description, $location ) {
+
     $ical_content = 'BEGIN:VCALENDAR
 PRODID:-//Mailer//NONSGML v1.0//EN
 VERSION:2.0
 CALCSCALE:GREGORIAN
 METHOD:REQUEST
 BEGIN:VEVENT
-DTSTART:' . date("Ymd\THis\Z", strtotime($start . 'CET')) . '
-DTEND:' . date("Ymd\THis\Z", strtotime($end . 'CET')) . '
+UID:f8c633a8f0013c976594c9e9ea62d1fa
+DTSTART:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($start . 'CET')) . '
+DTEND:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($end . 'CET')) . '
 ORGANIZER;CN=PORG:mailto:' . EMAIL_REPLYTO . '
 UID:' . md5(uniqid(mt_rand(), true)) . '@digitaltwin.lu
 CREATED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
@@ -21,6 +23,7 @@ LOCATION:Belval, Luxembourg
 END:VEVENT
 END:VCALENDAR
 ';
+
     return $ical_content;
 }
 

@@ -16,7 +16,7 @@ include '../html/welcome.html';
 // repackage and determine the event based on $conf and today's date
 $next_event = determineNextPorgEvent($conf);
 
-echo $next_event['pretty_date'] . '<br>' . $next_event['time'] . '</p>';
+echo $next_event['pretty_date'] . '<br>' . $next_event['stime'] . ' - ' . $next_event['etime'] . '</p>';
 
 echo "<h3>Location</h3>";
 // show the location based on $conf
