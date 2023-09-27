@@ -11,12 +11,7 @@ echo '<div class="container mt-5"><div class="row"><div class="col-12">';
 if (isset($_POST['porg_email_text'])) {
 
     // get the list of emailing list
-    $fh = fopen(MAILING_LIST_MEMBERS_FILENAME, 'r');
-    if ($fh) {
-        $maillist = fgetcsv($fh);
-    } else {
-        echo "Failed to open the mailing list file.";
-    }
+    $maillist = new MailingList();
 
     // get the salf file for deregistration/unsubscription
     $sfc = file_get_contents(ADMIN_SALT_FILE);
@@ -24,12 +19,7 @@ if (isset($_POST['porg_email_text'])) {
     $sent_count = 0;
 
     // send the emails
-    foreach( $maillist as $email_address ) {
-        // last one is empty
-        if( $email_address === '' ) {
-            continue;
-        }
-
+    foreach( $maillist->getList() as $email_address ) {
         // create hashed email
         $hashedemail = hashPassword($sfc . $email_address);
         $unsuburl = 'http://' . $_SERVER['SERVER_NAME'] . '/deregister/' . $email_address. '/' . $hashedemail;
