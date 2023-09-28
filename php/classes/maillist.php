@@ -35,25 +35,30 @@ class MailingList {
         }
     }
 
+    public function count ()
+    {
+        return count($this->list);
+    }
+
     private function save ()
     {
         file_put_contents(MAILING_LIST_MEMBERS_FILENAME, implode(',', $this->list));
     }
 
-    function remove ($email)
+    public function remove ($email)
     {
         $index = array_search($email, $this->list);
         unset($this->list[$index]);
         $this->save();
     }
 
-    function add ($email)
+    public function add ($email)
     {
         array_push($this->list, $email);
         $this->save();
     }
 
-    function exists ($email)
+    public function exists ($email)
     {
         if ( in_array($email, $this->list) ) {
             return true;
@@ -61,7 +66,7 @@ class MailingList {
         return false;
     }
 
-    function get ()
+    public function get ()
     {
         return $this->list;
     }

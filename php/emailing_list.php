@@ -8,16 +8,24 @@ require_once('../php/classes/maillist.php');
 
 // repackage and determine the event based on $conf and today's date
 $next_event = determineNextPorgEvent($conf);
+// get the list of emailing list
+$maillist = new MailingList();
 
-echo '<div class="container mt-2"><div class="row"><div class="col-12">';
+// open the form
+echo '<div class="container mt-2">
+    <form action="." method="post">
+        <div class="row">
+            <div class="col-12 mt-2"><h1>Contact mailing list</h1></div>';
+
+
 // process the email text, send it to the mailing list
 if (isset($_POST['porg_email_text'])) {
+    echo '<div class="row"><div class="col-12">';
 
-    // get the list of emailing list
-    $maillist = new MailingList();
-
-    // Create calendar invite/ICS
-    $ical_content = createIcalContent($next_event['start_dt'], $next_event['end_dt'], 'PORG meeting', $conf['porg_meeting_topic'], $next_event['place']);
+    $send_calendar_invite = false;
+    if ( strcmp('on', $_POST['send_calendar_invite']) === 0 ) {
+        $send_calendar_invite = true;
+    }
 
     // get the salf file for deregistration/unsubscription
     $sfc = file_get_contents(ADMIN_SALT_FILE);
@@ -31,9 +39,15 @@ if (isset($_POST['porg_email_text'])) {
         $unsuburl = 'http://' . $_SERVER['SERVER_NAME'] . '/deregister/' . $email_address. '/' . $hashedemail;
 
         $email = new Mail();
-        // attach ical event if requested
-        // DISABLED, doesn't work as desired
-        //$email->addStringAttachment($ical_content);
+
+        // if sending of calendar invitation is enabled
+        if ( $send_calendar_invite ) {
+            // Create calendar invite/ICS
+            $ical_content = createIcalContent($next_event['start_dt'], $next_event['end_dt'], 'PORG meeting', $conf['porg_meeting_topic'], $next_event['place'], $email_address);
+
+            // attach ical event if requested
+            $email->addStringAttachment($ical_content);
+        }
 
         // Build up the email content
         $ehtml = '<html><body>' . $_POST['porg_email_text'];
@@ -51,26 +65,20 @@ if (isset($_POST['porg_email_text'])) {
 
     // show count of emails successfully sent
     echo '<div class="alert alert-success" role="alert">' . $sent_count . ' emails sent</div>';
+
+    // close the col and row
+    echo '</div></div>';
 }
-echo '</div></div></div>';
 
-// SHOW THE FORM
-
+echo '<div class="col-12 my-2"><p class="text-primary mb-1">Members on the mailing list: <b>' . $maillist->count() . '</b></p></div>';
 
 echo <<< END
-<div class="container">
-    <form action="." method="post">
-        <div class="row">
-            <div class="col-12 mt-2"><h1>Contact mailing list</h1></div>
-
             <div class="col-12">
                 <textarea id="porg_email_text" name="porg_email_text" rows="10" class="w-100">
 <p>Dear PORG subscriber,</p>
-
-
 END;
 
-
+// Create the template text for the email to send out
 echo '<p>The next PORG meet-up is on <strong>' . $next_event['pretty_date'] . ' at ' . $next_event['stime'] . ' - ' . $next_event['etime'] . '</strong>.<br>' . "\n";
 
 echo '<p>The topic(s) for discussion are:<br>' . "\n";
@@ -88,6 +96,10 @@ if ( isset($conf['porg_location']) ) {
 
 echo <<< END
                 </textarea>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="send_calendar_invite" name="send_calendar_invite">
+                    <label class="form-check-label" for="send_calendar_invite">Also send calendar invitation</label>
+                </div>
             </div>
 
             <div class="col-12 text-end">

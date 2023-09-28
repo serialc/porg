@@ -2,7 +2,7 @@
 // Filename: php/functions.php
 // Purpose: Some miscellaneous functions
 
-function createIcalContent ($start, $end, $name, $description, $location ) {
+function createIcalContent ($start, $end, $name, $description, $location, $dest_email ) {
 
     $ical_content = 'BEGIN:VCALENDAR
 PRODID:-//Mailer//NONSGML v1.0//EN
@@ -11,6 +11,7 @@ CALCSCALE:GREGORIAN
 METHOD:REQUEST
 BEGIN:VEVENT
 UID:f8c633a8f0013c976594c9e9ea62d1fa
+ATTENDEE;CUTYPE=INDIVIDUAL;CN=' . $dest_email . ':mailto:' . $dest_email . '
 DTSTART:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($start . 'CET')) . '
 DTEND:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($end . 'CET')) . '
 ORGANIZER;CN=PORG:mailto:' . EMAIL_REPLYTO . '
@@ -18,7 +19,7 @@ UID:' . md5(uniqid(mt_rand(), true)) . '@digitaltwin.lu
 CREATED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
 DESCRIPTION:Productivity Open Research Group monthly meeting
 LAST-MODIFIED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
-SUMMARY:
+SUMMARY:PORG monthly meeting. Visit the website for more information.
 LOCATION:Belval, Luxembourg
 END:VEVENT
 END:VCALENDAR
