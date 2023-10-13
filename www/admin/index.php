@@ -18,7 +18,7 @@ require_once('../vendor/autoload.php');
 
 // load PORG settings and code
 // get the necessary constants, func, and class
-require_once('../php/config.php');
+require_once('../conf/config.php');
 require_once('../php/functions.php');
 require_once('../php/classes/mailer.php');
 

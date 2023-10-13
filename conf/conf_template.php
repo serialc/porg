@@ -17,6 +17,6 @@ namespace frakturmedia\porg;
 // other config
 define("PASSWORD_HASH_COST", 10);
 define("EVENT_DETAILS_FILE", "event_details.json");
-define("ADMIN_SALT_FILE", "admin/salt_file.txt");
-define("MAILING_LIST_MEMBERS_FILENAME", "admin/mailing_list.csv");
+define("ADMIN_SALT_FILE", "../conf/salt_file.txt");
+define("MAILING_LIST_MEMBERS_FILENAME", "../conf/mailing_list.csv");
 
