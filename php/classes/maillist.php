@@ -4,7 +4,7 @@
 
 namespace frakturmedia\porg;
 
-require_once('../php/config.php');
+require_once('../conf/config.php');
 
 class MailingList {
 
