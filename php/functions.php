@@ -5,12 +5,12 @@
 function createIcalContent ($start, $end, $name, $description, $location, $dest_email ) {
 
     $ical_content = 'BEGIN:VCALENDAR
-PRODID:-//Mailer//NONSGML v1.0//EN
 VERSION:2.0
+PRODID:-//Microsoft Corporation//Outlook 11.0 MIMEDIR//EN
 CALCSCALE:GREGORIAN
 METHOD:REQUEST
 BEGIN:VEVENT
-UID:f8c633a8f0013c976594c9e9ea62d1fa
+UID:' . md5(uniqid(mt_rand(), true)) . 'digitaltwin.lu
 ATTENDEE;CUTYPE=INDIVIDUAL;CN=' . $dest_email . ':mailto:' . $dest_email . '
 DTSTART:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($start . 'CET')) . '
 DTEND:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($end . 'CET')) . '
@@ -21,6 +21,9 @@ DESCRIPTION:Productivity Open Research Group monthly meeting
 LAST-MODIFIED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
 SUMMARY:PORG monthly meeting. Visit the website for more information.
 LOCATION:Belval, Luxembourg
+PRIORITY:5
+X-MICROSOFT-CDO-IMPORTANCE:1
+CLASS:PUBLIC
 END:VEVENT
 END:VCALENDAR
 ';
