@@ -41,7 +41,8 @@ class Mail
 
     public function addStringAttachment ( $content )
     {
-        $this->mail->addStringAttachment($content, 'calendar.ics', 'base64', 'text/calendar');
+        // provide the attachment
+        $this->mail->addStringAttachment($content, 'calendar.ics', 'base64', 'text/calendar;charset=utf-8;method=REQUEST');
     }
 
     public function send($email, $to_name, $subject, $html, $text)
