@@ -77,7 +77,7 @@ echo '<div class="col-lg-3 col-md-4"><h2>Meeting location</h2>';
 foreach($porg_locs as $loc) {
     $ploc = pathinfo($loc)['filename'];
 
-    echo '<div class="btn-group-vertical" role="group">';
+    echo '<div class="btn-group-vertical me-2" role="group">';
     echo '<input class="btn-check" type="radio" name="porg_location" id="' . $ploc . '" value="' . $ploc . '"';
     if ( strcmp($conf['porg_location'], $ploc) === 0 ) {
         echo " checked ";
