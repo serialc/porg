@@ -42,14 +42,11 @@ if (isset($_POST['porg_email_text'])) {
 
         // if sending of calendar invitation is enabled
         if ( $send_calendar_invite ) {
-            $event = new Mail();
-
             // Create calendar invite/ICS
             $ical_content = createIcalContent($next_event['start_dt'], $next_event['end_dt'], 'PORG meeting', $conf['porg_meeting_topic'], $next_event['place'], $email_address);
 
             // attach ical event if requested
-            $event->addStringAttachment($ical_content);
-            $event->send($email_address, 'Honorable PORG', 'PORG news', '<b>Event HTML</b>', 'Event Text');
+            $email->addStringAttachment($ical_content);
         }
 
         // Build up the email content
@@ -99,9 +96,9 @@ if ( isset($conf['porg_location']) ) {
 
 echo <<< END
                 </textarea>
-                <div class="form-check">
+                <div class="form-check fs-5 mt-2">
                     <input type="checkbox" class="form-check-input" id="send_calendar_invite" name="send_calendar_invite">
-                    <label class="form-check-label" for="send_calendar_invite">Also send calendar invitation</label>
+                    <label class="form-check-label" for="send_calendar_invite">Send calendar invitation</label>
                 </div>
             </div>
 

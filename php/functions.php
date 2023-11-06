@@ -2,33 +2,55 @@
 // Filename: php/functions.php
 // Purpose: Some miscellaneous functions
 
+namespace frakturmedia\porg;
+
+use Eluceo\iCal\Domain\Entity\Event;
+use Eluceo\iCal\Domain\ValueObject\UniqueIdentifier;
+
+use Eluceo\iCal\Domain\ValueObject\Timestamp;
+
+use Eluceo\iCal\Domain\ValueObject\TimeSpan;
+use Eluceo\iCal\Domain\ValueObject\DateTime;
+
+use Eluceo\iCal\Domain\ValueObject\Uri;
+
+use Eluceo\iCal\Domain\ValueObject\Location;
+use Eluceo\iCal\Domain\ValueObject\GeographicPosition;
+
+use Eluceo\iCal\Domain\ValueObject\Organizer;
+use Eluceo\iCal\Domain\ValueObject\EmailAddress;
+
+use Eluceo\iCal\Domain\Entity\Calendar;
+use Eluceo\iCal\Presentation\Factory\CalendarFactory;
+
 function createIcalContent ($start, $end, $name, $description, $location, $dest_email ) {
 
-    $ical_content = 'BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Microsoft Corporation//Outlook 11.0 MIMEDIR//EN
-CALCSCALE:GREGORIAN
-METHOD:REQUEST
-BEGIN:VEVENT
-UID:' . md5(uniqid(mt_rand(), true)) . 'digitaltwin.lu
-ATTENDEE;CUTYPE=INDIVIDUAL;CN=' . $dest_email . ':mailto:' . $dest_email . '
-DTSTART:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($start . 'CET')) . '
-DTEND:TZID=Europe/Berlin:' . date("Ymd\THis\Z", strtotime($end . 'CET')) . '
-ORGANIZER;CN=PORG:mailto:' . EMAIL_REPLYTO . '
-UID:' . md5(uniqid(mt_rand(), true)) . '@digitaltwin.lu
-CREATED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
-DESCRIPTION:Productivity Open Research Group monthly meeting
-LAST-MODIFIED:' . gmdate('Ymd').'T'. gmdate('His') . 'Z
-SUMMARY:PORG monthly meeting. Visit the website for more information.
-LOCATION:Belval, Luxembourg
-PRIORITY:5
-X-MICROSOFT-CDO-IMPORTANCE:1
-CLASS:PUBLIC
-END:VEVENT
-END:VCALENDAR
-';
+    // create the event with a unique identifier
+    $event = (new Event( new UniqueIdentifier('porg.digitaltwin.lu')))
+        ->touch(new Timestamp())
+        ->setSummary($name)
+        ->setDescription($description)
+        ->setOccurrence(
+            new TimeSpan(
+                new DateTime(\DateTimeImmutable::createFromFormat('Y-m-d H:i', $start), false),
+                new DateTime(\DateTimeImmutable::createFromFormat('Y-m-d H:i', $end), false),
+            )
+        )
+        ->setUrl( new Uri('https://' . $_SERVER['SERVER_NAME']))
+        ->setLocation( 
+            (new Location($location))
+                ->withGeographicPosition(new GeographicPosition(49.504558,5.9464613))
+        )
+        ->setOrganizer(
+            new Organizer(
+                new EmailAddress(EMAIL_REPLYTO),
+                'PORG'
+            )
+        );
 
-    return $ical_content;
+    $calendar = new Calendar([$event]);
+    $ical_content = (new CalendarFactory())->createCalendar($calendar);
+    return (string) $ical_content;
 }
 
 // https://stackoverflow.com/questions/4356289/php-random-string-generator
@@ -55,11 +77,11 @@ function determineNextPorgEvent($conf)
 {
     // get the requested date
     if (strcmp($conf['porg_date'], '') !== 0) {
-        $req_date = new DateTime($conf['porg_date']);
+        $req_date = new \DateTime($conf['porg_date']);
     }
 
     // get today's date
-    $today = new DateTime(date('Y-m-d'));
+    $today = new \DateTime(date('Y-m-d'));
 
     // if the requested date is in the future, or today, display that
     // need to still check if porg_date is '' as otherwise $req_date is today
