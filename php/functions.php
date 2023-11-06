@@ -33,7 +33,7 @@ function createIcalContent ($start, $end, $name, $description, $location, $dest_
         ->setOccurrence(
             new TimeSpan(
                 new DateTime(\DateTimeImmutable::createFromFormat('Y-m-d H:i', $start), false),
-                new DateTime(\DateTimeImmutable::createFromFormat('Y-m-d H:i', $end), false),
+                new DateTime(\DateTimeImmutable::createFromFormat('Y-m-d H:i', $end), false)
             )
         )
         ->setUrl( new Uri('https://' . $_SERVER['SERVER_NAME']))
