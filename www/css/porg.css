@@ -82,3 +82,7 @@ pre code {
     font-size: 1.4rem;
     font-weight: 300;
 }
+
+.meet_label {
+    width: 8em;
+}

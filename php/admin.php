@@ -54,18 +54,18 @@ echo '<div class="col-12"><h1>Next event details</h1></div>';
 echo '<div class="col-lg-4 col-md-8"><h2>Next meeting date-time</h2>';
 
 echo '<div class="input-group">' .
-     '<label for="porg_date" class="input-group-text">Select date</label>' .
+     '<label for="porg_date" class="input-group-text meet_label">Select date</label>' .
      '<input type="date" class="form-control" id="porg_date" name="porg_date" value="' . $conf['porg_date'] . '">' .
      '</div>';
      echo '<div class="form-text mb-2">If blank, next second Monday of month is used</div>';
 
 echo '<div class="input-group">' .
-     '<label for="porg_stime" class="input-group-text">Start time</label>' .
+     '<label for="porg_stime" class="input-group-text meet_label">Start time</label>' .
      '<input type="time" class="form-control" id="porg_stime" name="porg_stime" value="' . $conf['porg_stime'] . '">' .
      '</div>';
 
 echo '<div class="input-group mt-1">
-     <label for="porg_etime" class="input-group-text">End time</label>
+     <label for="porg_etime" class="input-group-text meet_label">End time</label>
      <input type="time" class="form-control" id="porg_etime" name="porg_etime" value="' . $conf['porg_etime'] . '">
      </div>';
      echo '<div class="form-text mb-2">If blank, default time of 12h00 - 13h00 is used</div>';
