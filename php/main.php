@@ -18,10 +18,14 @@ $next_event = determineNextPorgEvent($conf);
 
 echo $next_event['pretty_date'] . '<br>' . $next_event['stime'] . ' - ' . $next_event['etime'] . '</p>';
 
+// select Parsedown from the global namespace
+$parsedown = new \Parsedown();
+
 echo "<h3>Location</h3>";
 // show the location based on $conf
 if ( isset($conf['porg_location']) ) {
-    include('../html/locations/' . $conf['porg_location'] . '.html');
+    $room = json_decode(file_get_contents(EVENT_ROOMS_FOLDER . $conf['porg_location']), true);
+    echo $parsedown->text($room['description']);
 } else {
     echo 'No location set yet';
 }
@@ -31,9 +35,7 @@ echo '<h3 class="mt-5">Suggested topic for next meeting</h3>';
 echo '<div id="next_meeting_topic">';
 if ( $conf['porg_meeting_topic'] ) {
 
-    // select Parsedown from the global namespace
-    $Parsedown = new \Parsedown();
-    echo $Parsedown->text($conf['porg_meeting_topic']);
+    echo $parsedown->text($conf['porg_meeting_topic']);
 
 } else {
 

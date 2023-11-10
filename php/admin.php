@@ -10,7 +10,7 @@ echo '<div class="row">';
 $conf = json_decode(file_get_contents(EVENT_DETAILS_FILE), true);
 
 // the possible locations
-$porg_locs = array_diff(scandir('../html/locations'), array('.', '..'));
+$porg_locs = array_diff(scandir(EVENT_ROOMS_FOLDER), array('.', '..'));
 
 // update date
 if (isset($_POST['porg_date'])) {
@@ -74,16 +74,19 @@ echo '</div>';
 // show the location form
 echo '<div class="col-lg-3 col-md-4"><h2>Meeting location</h2>';
 
-foreach($porg_locs as $loc) {
-    $ploc = pathinfo($loc)['filename'];
+foreach($porg_locs as $fn) {
+
+    $room = json_decode(file_get_contents(EVENT_ROOMS_FOLDER . $fn), true);
 
     echo '<div class="btn-group-vertical me-2" role="group">';
-    echo '<input class="btn-check" type="radio" name="porg_location" id="' . $ploc . '" value="' . $ploc . '"';
-    if ( strcmp($conf['porg_location'], $ploc) === 0 ) {
+    echo '<input class="btn-check" type="radio" name="porg_location" id="' .
+        $room['name'] . '" value="' . $fn . '"';
+    if ( strcmp($conf['porg_location'], $fn) === 0 ) {
         echo " checked ";
     }
     echo '>';
-    echo '<label class="btn btn-outline-primary" for="' . $ploc . '">' . $ploc . '</label></div>';
+    echo '<label class="btn btn-outline-primary mt-2" for="' . $room['name'] . '">' .
+        $room['name'] . '</label></div>';
 }
 echo '</div>';
 

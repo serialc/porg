@@ -47,10 +47,15 @@ if (isset($_POST['porg_email_text'])) {
 
             // attach ical event if requested
             $email->addStringAttachment($ical_content);
+
+            print("CALENDAR INVITE SENT");
         }
 
+        // select Parsedown from the global namespace
+        $parsedown = new \Parsedown();
+
         // Build up the email content
-        $ehtml = '<html><body>' . $_POST['porg_email_text'];
+        $ehtml = '<html><body>' . $parsedown->text($_POST['porg_email_text']);
 
         // add deregister text at footer
         $ehtml .= '<p><a href="https://porg.digitaltwin.lu">Visit the website</a> for more information.</p>';
@@ -75,21 +80,21 @@ echo '<div class="col-12 my-2"><p class="text-primary mb-1">Members on the maili
 echo <<< END
             <div class="col-12">
                 <textarea id="porg_email_text" name="porg_email_text" rows="10" class="w-100">
-<p>Dear PORG subscriber,</p>
+Dear PORG subscriber,
+
+
 END;
 
 // Create the template text for the email to send out
-echo '<p>The next PORG meet-up is on <strong>' . $next_event['pretty_date'] . ' at ' . $next_event['stime'] . ' - ' . $next_event['etime'] . '</strong>.<br>' . "\n";
+echo 'The next PORG meet-up is on **' . $next_event['pretty_date'] . ' at ' . $next_event['stime'] . ' - ' . $next_event['etime'] . '**.' . "\n\n";
 
-echo '<p>The topic(s) for discussion are:<br>' . "\n";
+echo 'The topic(s) for discussion are:  ' . "\n";
 
-// select Parsedown from the global namespace
-$Parsedown = new \Parsedown();
-echo $Parsedown->text($conf['porg_meeting_topic']);
+echo $conf['porg_meeting_topic'];
 
-echo "\n" . '<p>The meeting will take place here:</p>' . "\n";
+echo "\n\n" . 'The meeting will take place here:  ' . "\n";
 if ( isset($conf['porg_location']) ) {
-    include('../html/locations/' . $conf['porg_location'] . '.html');
+    echo json_decode(file_get_contents(EVENT_ROOMS_FOLDER . $conf['porg_location']), true)['description'];
 } else {
     echo 'No location set yet' . "\n";
 }
