@@ -89,6 +89,9 @@ if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDA
             $hashed_email = implode('/', array_splice($req, 2));
         }
 
+        // need to decode URLs with special characters
+        $hashed_email = urldecode($hashed_email);
+
         // check that passed password is valid and that the salted email is correct
         if ( strcmp(filter_var($this_email, FILTER_VALIDATE_EMAIL), $this_email) === 0
             and password_verify($salted_email, $hashed_email) ) {
