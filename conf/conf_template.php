@@ -19,5 +19,6 @@ define("PASSWORD_HASH_COST", 10);
 define("EVENT_DETAILS_FILE", "../conf/event_details.json");
 define("ADMIN_SALT_FILE", "../conf/salt_file.txt");
 define("MAILING_LIST_MEMBERS_FILENAME", "../conf/mailing_list.csv");
+define("MAILING_ARCHIVE_FOLDER", "../conf/ml_archive/");
 define("EVENT_ROOMS_FOLDER", "../conf/rooms/");
 

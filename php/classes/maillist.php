@@ -9,6 +9,7 @@ require_once('../conf/config.php');
 class MailingList {
 
     private $list;
+    private $raw;
 
     function __construct( )
     {
@@ -18,16 +19,16 @@ class MailingList {
         }
 
         // retrieve the data and trim any unexpected spaces or commas
-        $raw_file = trim(file_get_contents(MAILING_LIST_MEMBERS_FILENAME), ', ');
+        $this->raw = trim(file_get_contents(MAILING_LIST_MEMBERS_FILENAME), ', ');
 
         // if retrieved correctly
-        if ($raw_file !== false) {
+        if ($this->raw !== false) {
             // if empty, create empty array
-            if ( strcmp($raw_file, '') === 0) {
+            if ( strcmp($this->raw, '') === 0) {
                 $this->list= [];
             } else {
                 // transform from csv to list and remove any trailing spaces, commas
-                $this->list = explode(',', $raw_file);
+                $this->list = explode(',', $this->raw);
             }
         } else {
             echo "Failed to open the mailing list file.";
@@ -42,6 +43,14 @@ class MailingList {
 
     private function save ()
     {
+        if (!file_exists(MAILING_ARCHIVE_FOLDER)) {
+            mkdir(MAILING_ARCHIVE_FOLDER);
+        }
+
+        # backup list
+        file_put_contents(MAILING_ARCHIVE_FOLDER . 'ML_' . date('Y-m-d_H-i-s') . '.csv', $this->raw);
+
+        # overwrite 
         file_put_contents(MAILING_LIST_MEMBERS_FILENAME, implode(',', $this->list));
     }
 

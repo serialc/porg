@@ -17,12 +17,22 @@ $sfc = file_get_contents(ADMIN_SALT_FILE);
 $this_email = $req[1];
 $salted_email = $sfc . $this_email;
 
+// so there's no error if someone tests the URL
+if ( count($req) < 3 ) {
+    echo '<h1>Invalid request</h1>';
+    echo '<p>The form of your request is unexpected. Reach out to us to let us know.</p>';
+    return;
+}
+
 // there may be a slash in the hashed email
 // need to select $req[2+]
 $hashed_email = $req[2];
 if ( count($req) > 3 ) {
     $hashed_email = implode('/', array_splice($req, 2));
 }
+
+// need to decode URLs with special characters
+$hashed_email = urldecode($hashed_email);
 
 // check that passed password is valid and that the salted email is correct
 if ( strcmp(filter_var($this_email, FILTER_VALIDATE_EMAIL), $this_email) === 0
