@@ -21,6 +21,9 @@ class MailingList {
         // retrieve the data and trim any unexpected spaces or commas
         $this->raw = trim(file_get_contents(MAILING_LIST_MEMBERS_FILENAME), ', ');
 
+        // remove any new lines if we find some
+        $this->raw = str_replace(array("\n","\r\n","\r"), '', $this->raw);
+
         // if retrieved correctly
         if ($this->raw !== false) {
             // if empty, create empty array
