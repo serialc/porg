@@ -21,7 +21,9 @@ if (!$sfc) {
     file_put_contents(ADMIN_SALT_FILE, $sfc);
 }
 
-// is an email address sent and valid
+// The user has sumbitted an email to start the registration process
+// First check - is an email address sent and is it valid
+// If okay, prep an email to send to them
 if (isset($_POST['reg_email']) and filter_var($_POST['reg_email'], FILTER_VALIDATE_EMAIL)) {
     $newmailaddress = $_POST['reg_email'];
 
