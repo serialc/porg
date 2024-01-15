@@ -1,0 +1,11 @@
+# TOML syntax (this is a comment)
+# below is a key value pair
+# something = value
+# [item] this is a variable key value heading - any KV below will reside within
+# [item.subitem] this is a sub specification
+# [[apple]] array item?
+
+brand = "PORG"
+full_name = '<p class="fs-4">Productivity Open Research Group</p><p class="fs-5"><i>A monthly brown bag discussion group</i></p>'
+logo_filename = "/imgs/site/porg.svg"
+contact_email = "to be defined"

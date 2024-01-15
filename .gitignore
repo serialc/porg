@@ -1,11 +1,5 @@
-vendor
-conf/ml_archive
-composer.lock
-.htaccess
-.htpasswd
-salt_file.txt
+ml_archive
 config.php
-mailing_list.csv
-composer.phar
 event_details.json
-*.swp
+mailing_list.csv
+mailing_list_db_backup.csv

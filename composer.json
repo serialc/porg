@@ -1,7 +1,0 @@
-{
-    "require": {
-        "phpmailer/phpmailer": "^6.6",
-        "erusev/parsedown": "^1.7",
-        "eluceo/ical": "^2.12"
-    }
-}

@@ -1,0 +1,6 @@
+/* This is the custom CSS for your site */
+/* It will override the RizeMeet standard styling */
+
+.hero, .mini-hero {
+    background-color: #879c97;
+}
